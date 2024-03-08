@@ -4,7 +4,11 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document("Pkmn")
+@TypeAlias("PkmnData")
 public class PkmnData extends Pkmn {
     @Id
     private ObjectId id;
