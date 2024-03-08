@@ -1,9 +1,7 @@
 package fr.iut.sj.pkdxapi.repositories;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
