@@ -42,13 +42,13 @@ public class PkmnController {
         return ResponseEntity.ok(createdPkmn);
     }
 
-    @DeleteMapping("/pkmn/delete")
+    @DeleteMapping("/pkmn")
     public ResponseEntity<String> deletePkmn(@RequestParam ObjectId id) {
         pkmnService.deletePkmn(id);
         return ResponseEntity.ok("Pokemouille deleted");
     }
 
-    @PutMapping("pkmn/update")
+    @PutMapping("pkmn")
     public ResponseEntity<PkmnData> updatePkmn(
             @RequestParam ObjectId id,
             @RequestParam(required = false) String name,
@@ -65,6 +65,12 @@ public class PkmnController {
     public ResponseEntity<PkmnData> addRegion(@RequestParam String name, @RequestParam String regionName, @RequestParam int regionNumber) {
         PkmnRegion pkmnRegion = new PkmnRegion(regionName, regionNumber);
         PkmnData updatedPkmn = pkmnService.addRegion(name, pkmnRegion);
+        return ResponseEntity.ok(updatedPkmn);
+    }
+
+    @DeleteMapping("/pkmn/region")
+    public ResponseEntity<PkmnData> removeRegion(@RequestParam ObjectId id, @RequestParam String regionName) {
+        PkmnData updatedPkmn = pkmnService.removeRegion(id, regionName);
         return ResponseEntity.ok(updatedPkmn);
     }
 

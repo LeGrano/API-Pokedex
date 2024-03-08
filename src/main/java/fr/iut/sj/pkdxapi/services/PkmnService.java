@@ -1,5 +1,7 @@
 package fr.iut.sj.pkdxapi.services;
 
+import fr.iut.sj.pkdxapi.errors.PkmnAlreadyExistsException;
+import fr.iut.sj.pkdxapi.errors.PkmnNotFoundException;
 import fr.iut.sj.pkdxapi.models.PkmnData;
 import fr.iut.sj.pkdxapi.models.PkmnRegion;
 import fr.iut.sj.pkdxapi.models.PkmnTypes;
@@ -43,7 +45,7 @@ public class PkmnService {
         String PkmnName = pkmnData.getName();
         boolean PkmnExists = findByName(PkmnName);
         if (PkmnExists) {
-            throw new UnsupportedOperationException("Pkmn already exists");
+            throw new PkmnAlreadyExistsException("Pokemon already exists");
         }
         String PkmnDescription = pkmnData.getDescription();
         String PkmnImgURL = pkmnData.getImgURL();
@@ -97,7 +99,7 @@ public class PkmnService {
         List<PkmnData> pkmnList = pkmnRepository.findByName(pkmnName);
 
         if (pkmnList.isEmpty()) {
-            throw new IllegalArgumentException("Pokemon not found");
+            throw new PkmnAlreadyExistsException("Pokemon already exists");
         }
 
         PkmnData pkmn = pkmnList.get(0);
@@ -110,6 +112,15 @@ public class PkmnService {
         return pkmn;
     }
 
+    public PkmnData removeRegion(ObjectId id, String regionName) {
+        PkmnData pkmn = pkmnRepository.findById(id).orElseThrow();
+        List<PkmnRegion> regions = pkmn.getRegions();
+        regions.removeIf(region -> region.getRegionName().equals(regionName));
+        pkmn.setRegions(regions);
+        pkmnRepository.save(pkmn);
+        return pkmn;
+    }
+
     public List<PkmnData> getPkmnByPartialName(String partialName) {
         return pkmnRepository.findByPartialName(partialName);
     }
@@ -117,7 +128,7 @@ public class PkmnService {
     public PkmnData getPkmnByName(String name) {
         List<PkmnData> pkmnList = pkmnRepository.findByName(name);
         if (pkmnList.isEmpty()) {
-            throw new IllegalArgumentException("Pokemon not found");
+            throw new PkmnNotFoundException("Pokemon not found");
         }
         return pkmnList.get(0);
     }
